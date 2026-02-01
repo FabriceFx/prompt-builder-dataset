@@ -1,4 +1,4 @@
-# 🚀 PromptBuilder (PHP Edition)
+# 🚀 PromptBuilder
 
 ![License MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 ![Platform](https://img.shields.io/badge/Platform-Web%20%2F%20PHP-blue)
