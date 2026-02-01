@@ -25,7 +25,7 @@ $jobData['templates'] = $jobData['templates'] ?? [];
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Builder - <?php echo htmlspecialchars($jobData['translations']['fr']['title']); ?></title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -48,170 +48,222 @@ $jobData['templates'] = $jobData['templates'] ?? [];
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .text-dynamic { color: var(--primary); }
+        
+        /* Utilitaires pour les onglets mobiles */
+        .tab-active { border-bottom: 2px solid var(--primary); color: var(--primary); font-weight: 700; background-color: #f0f9ff; }
+        .tab-inactive { border-bottom: 2px solid transparent; color: #64748b; font-weight: 500; }
     </style>
 </head>
-<body class="flex flex-col md:flex-row h-screen w-screen">
+<body class="flex flex-col h-screen w-screen bg-gray-50">
 
-    <aside class="w-full md:w-[480px] flex flex-col h-full bg-white border-r border-gray-200 z-20 shadow-xl relative">
-        
-        <header class="p-4 border-b border-gray-100 bg-white sticky top-0 z-10 flex flex-col gap-3">
-            <div class="flex justify-between items-center">
-                <div class="flex items-center gap-3">
-                    <a href="index.php" class="w-8 h-8 rounded-full bg-gray-50 hover:bg-gray-100 flex items-center justify-center transition text-gray-500">
-                        <i class="fas fa-arrow-left text-xs"></i>
-                    </a>
-                    <h1 class="text-lg font-bold text-gray-800 text-dynamic truncate max-w-[200px]" id="job-title">
-                        <?php echo htmlspecialchars($jobData['translations']['fr']['title']); ?>
-                    </h1>
+    <div class="md:hidden flex-none bg-white border-b border-gray-200 flex z-30 shadow-sm">
+        <button onclick="switchTab('edit')" id="tab-btn-edit" class="flex-1 py-3 text-sm transition-colors tab-active flex items-center justify-center gap-2">
+            <i class="fas fa-edit"></i> <span data-ui="tab_edit">Édition</span>
+        </button>
+        <button onclick="switchTab('result')" id="tab-btn-result" class="flex-1 py-3 text-sm transition-colors tab-inactive flex items-center justify-center gap-2">
+            <i class="fas fa-magic"></i> <span data-ui="tab_result">Résultat</span>
+        </button>
+    </div>
+
+    <div class="flex-grow flex flex-col md:flex-row overflow-hidden relative h-full">
+
+        <aside id="panel-edit" class="w-full md:w-[480px] flex flex-col h-full bg-white border-r border-gray-200 z-20 shadow-xl relative md:flex">
+            
+            <header class="p-4 border-b border-gray-100 bg-white sticky top-0 z-10 flex flex-col gap-3">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <a href="index.php" class="w-8 h-8 rounded-full bg-gray-50 hover:bg-gray-100 flex items-center justify-center transition text-gray-500">
+                            <i class="fas fa-arrow-left text-xs"></i>
+                        </a>
+                        <h1 class="text-lg font-bold text-gray-800 text-dynamic truncate max-w-[200px]" id="job-title">
+                            <?php echo htmlspecialchars($jobData['translations']['fr']['title']); ?>
+                        </h1>
+                    </div>
+                    
+                    <div class="bg-gray-100 p-1 rounded-lg flex">
+                        <button onclick="setLang('fr')" id="btn-fr" class="px-3 py-1 rounded-md text-[10px] font-bold transition bg-white shadow-sm text-gray-800">FR</button>
+                        <button onclick="setLang('en')" id="btn-en" class="px-3 py-1 rounded-md text-[10px] font-bold transition text-gray-500 hover:bg-gray-200">EN</button>
+                    </div>
+                </div>
+
+                <select id="template-selector" onchange="applyTemplate(this.value)" class="text-xs font-bold bg-gray-50 border border-gray-200 rounded-lg py-2 px-3 text-gray-600 outline-none cursor-pointer hover:bg-gray-100 transition w-full">
+                    <option value="">✨ <span data-ui="models">Modèles...</span></option>
+                    <optgroup label="Officiels" id="official-tpl-group"></optgroup>
+                    <optgroup label="Mes Sauvegardes" id="local-templates-group"></optgroup>
+                </select>
+            </header>
+
+            <div class="flex-grow overflow-y-auto p-5 space-y-4 pb-20">
+                <div class="bg-blue-50/50 p-3 rounded-xl border border-blue-100">
+                    <div class="input-group border-0 bg-transparent p-0">
+                        <label class="input-label text-blue-600" data-ui="role">1. Persona (Rôle)</label>
+                        <input type="text" id="role" class="modern-input font-bold text-blue-900" placeholder="Ex: Expert..." oninput="updatePrompt()">
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="input-group">
+                        <label class="input-label" data-ui="task">2. Tâche à accomplir</label>
+                        <textarea id="task" rows="3" class="modern-input resize-none" placeholder="..." oninput="updatePrompt()"></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label" data-ui="context">3. Contexte</label>
+                        <textarea id="context" rows="2" class="modern-input resize-none" placeholder="..." oninput="updatePrompt()"></textarea>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="input-group">
+                        <label class="input-label" data-ui="tone">Ton</label>
+                        <select id="tone" class="modern-input bg-transparent cursor-pointer" onchange="updatePrompt()"></select>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label" data-ui="format">Format</label>
+                        <select id="format" class="modern-input bg-transparent cursor-pointer" onchange="updatePrompt()"></select>
+                    </div>
+                </div>
+
+                <div class="input-group border-l-4 border-l-purple-300">
+                    <label class="input-label text-purple-600" data-ui="example">★ Exemple (Few-Shot)</label>
+                    <textarea id="example" rows="2" class="modern-input resize-none text-xs" placeholder="..." oninput="updatePrompt()"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" data-ui="constraints">Contraintes</label>
+                    <input type="text" id="constraints" class="modern-input" placeholder="..." oninput="updatePrompt()">
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-center mb-2 px-1">
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider" data-ui="instructions">Instructions</span>
+                        <button onclick="addInst()" class="bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-full w-5 h-5 flex items-center justify-center transition"><i class="fas fa-plus text-[8px]"></i></button>
+                    </div>
+                    <div id="inst-container" class="space-y-2"></div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 pt-2">
+                    <label class="flex items-center gap-2 p-3 bg-gray-50 rounded-xl cursor-pointer hover:bg-gray-100 transition border border-transparent hover:border-gray-200">
+                        <input type="checkbox" id="feedback-loop" class="w-4 h-4 text-blue-600 rounded" onchange="updatePrompt()">
+                        <div class="leading-none">
+                            <span class="text-xs font-bold text-gray-700 block" data-ui="interactive">Mode Interactif</span>
+                        </div>
+                    </label>
+                    <label class="flex items-center gap-2 p-3 bg-indigo-50 rounded-xl cursor-pointer hover:bg-indigo-100 transition border border-transparent hover:border-indigo-200">
+                        <input type="checkbox" id="refine-loop" class="w-4 h-4 text-indigo-600 rounded" onchange="updatePrompt()">
+                        <div class="leading-none">
+                            <span class="text-xs font-bold text-indigo-700 block" data-ui="cot">Auto-Critique</span>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 pt-4">
+                    <button onclick="saveLocal()" class="btn-action w-full py-3 rounded-xl font-bold text-xs bg-white border border-gray-200 text-gray-600 hover:text-blue-600 shadow-sm flex items-center justify-center gap-2">
+                        <i class="far fa-bookmark"></i> <span data-ui="save">Sauver</span>
+                    </button>
+                    <button onclick="shareToServer()" id="btn-share" class="btn-action w-full py-3 rounded-xl font-bold text-xs bg-white border border-gray-200 text-gray-600 hover:text-purple-600 shadow-sm flex items-center justify-center gap-2">
+                        <i class="fas fa-cloud-upload-alt"></i> <span data-ui="share">Partager</span>
+                    </button>
                 </div>
                 
-                <div class="bg-gray-100 p-1 rounded-lg flex">
-                    <button onclick="setLang('fr')" id="btn-fr" class="px-3 py-1 rounded-md text-[10px] font-bold transition bg-white shadow-sm text-gray-800">FR</button>
-                    <button onclick="setLang('en')" id="btn-en" class="px-3 py-1 rounded-md text-[10px] font-bold transition text-gray-500 hover:bg-gray-200">EN</button>
-                </div>
+                <div class="h-10 md:hidden"></div>
             </div>
-
-            <select id="template-selector" onchange="applyTemplate(this.value)" class="text-xs font-bold bg-gray-50 border border-gray-200 rounded-lg py-2 px-3 text-gray-600 outline-none cursor-pointer hover:bg-gray-100 transition w-full">
-                <option value="">✨ <span data-ui="models">Modèles...</span></option>
-                <optgroup label="Officiels" id="official-tpl-group"></optgroup>
-                <optgroup label="Mes Sauvegardes" id="local-templates-group"></optgroup>
-            </select>
-        </header>
-
-        <div class="flex-grow overflow-y-auto p-5 space-y-4 pb-20">
-            <div class="bg-blue-50/50 p-3 rounded-xl border border-blue-100">
-                <div class="input-group border-0 bg-transparent p-0">
-                    <label class="input-label text-blue-600" data-ui="role">1. Persona (Rôle)</label>
-                    <input type="text" id="role" class="modern-input font-bold text-blue-900" placeholder="Ex: Expert..." oninput="updatePrompt()">
-                </div>
-            </div>
-
-            <div class="space-y-4">
-                <div class="input-group">
-                    <label class="input-label" data-ui="task">2. Tâche à accomplir</label>
-                    <textarea id="task" rows="3" class="modern-input resize-none" placeholder="..." oninput="updatePrompt()"></textarea>
-                </div>
-                <div class="input-group">
-                    <label class="input-label" data-ui="context">3. Contexte</label>
-                    <textarea id="context" rows="2" class="modern-input resize-none" placeholder="..." oninput="updatePrompt()"></textarea>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3">
-                <div class="input-group">
-                    <label class="input-label" data-ui="tone">Ton</label>
-                    <select id="tone" class="modern-input bg-transparent cursor-pointer" onchange="updatePrompt()"></select>
-                </div>
-                <div class="input-group">
-                    <label class="input-label" data-ui="format">Format</label>
-                    <select id="format" class="modern-input bg-transparent cursor-pointer" onchange="updatePrompt()"></select>
-                </div>
-            </div>
-
-            <div class="input-group border-l-4 border-l-purple-300">
-                <label class="input-label text-purple-600" data-ui="example">★ Exemple (Few-Shot)</label>
-                <textarea id="example" rows="2" class="modern-input resize-none text-xs" placeholder="..." oninput="updatePrompt()"></textarea>
-            </div>
-
-            <div class="input-group">
-                <label class="input-label" data-ui="constraints">Contraintes</label>
-                <input type="text" id="constraints" class="modern-input" placeholder="..." oninput="updatePrompt()">
-            </div>
-
-            <div>
-                <div class="flex justify-between items-center mb-2 px-1">
-                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider" data-ui="instructions">Instructions</span>
-                    <button onclick="addInst()" class="bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-full w-5 h-5 flex items-center justify-center transition"><i class="fas fa-plus text-[8px]"></i></button>
-                </div>
-                <div id="inst-container" class="space-y-2"></div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3 pt-2">
-                <label class="flex items-center gap-2 p-3 bg-gray-50 rounded-xl cursor-pointer hover:bg-gray-100 transition border border-transparent hover:border-gray-200">
-                    <input type="checkbox" id="feedback-loop" class="w-4 h-4 text-blue-600 rounded" onchange="updatePrompt()">
-                    <div class="leading-none">
-                        <span class="text-xs font-bold text-gray-700 block" data-ui="interactive">Mode Interactif</span>
-                    </div>
-                </label>
-                <label class="flex items-center gap-2 p-3 bg-indigo-50 rounded-xl cursor-pointer hover:bg-indigo-100 transition border border-transparent hover:border-indigo-200">
-                    <input type="checkbox" id="refine-loop" class="w-4 h-4 text-indigo-600 rounded" onchange="updatePrompt()">
-                    <div class="leading-none">
-                        <span class="text-xs font-bold text-indigo-700 block" data-ui="cot">Auto-Critique</span>
-                    </div>
-                </label>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3 pt-4">
-                <button onclick="saveLocal()" class="btn-action w-full py-3 rounded-xl font-bold text-xs bg-white border border-gray-200 text-gray-600 hover:text-blue-600 shadow-sm flex items-center justify-center gap-2">
-                    <i class="far fa-bookmark"></i> <span data-ui="save">Sauver</span>
-                </button>
-                <button onclick="shareToServer()" id="btn-share" class="btn-action w-full py-3 rounded-xl font-bold text-xs bg-white border border-gray-200 text-gray-600 hover:text-purple-600 shadow-sm flex items-center justify-center gap-2">
-                    <i class="fas fa-cloud-upload-alt"></i> <span data-ui="share">Partager</span>
-                </button>
-            </div>
-        </div>
-        
-        <div id="toast" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs py-2 px-4 rounded-full opacity-0 transition-opacity duration-300 pointer-events-none">
-            Sauvegardé
-        </div>
-    </aside>
-
-    <main class="flex-grow bg-gray-50 flex flex-col h-full relative">
-        <div class="flex-grow p-4 md:p-8 overflow-y-auto">
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 min-h-full p-8 relative group">
-                <button onclick="copyText()" id="btn-copy" class="absolute top-4 right-4 z-10 bg-white border border-gray-200 text-gray-400 hover:text-blue-600 hover:border-blue-200 px-3 py-1.5 rounded-lg shadow-sm font-bold text-xs transition flex items-center gap-2 btn-action opacity-0 group-hover:opacity-100 focus:opacity-100">
-                    <i class="far fa-copy"></i> <span data-ui="copy">Copier</span>
-                </button>
-                <div id="output" class="whitespace-pre-wrap text-gray-700 font-mono text-sm leading-relaxed pt-2"></div>
-            </div>
-        </div>
-
-        <div class="p-4 bg-white border-t border-gray-200 flex flex-col xl:flex-row justify-between items-center gap-4">
-            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider flex-shrink-0">
-                <i class="fas fa-rocket mr-1"></i> <span data-ui="launch">Lancer avec :</span>
-            </span>
             
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:flex flex-wrap gap-2 w-full xl:w-auto">
-                <button onclick="copyAndOpen('https://gemini.google.com')" class="group flex items-center justify-center gap-2 px-3 py-2 bg-white border border-gray-200 hover:border-blue-400 hover:bg-blue-50 rounded-lg text-xs font-bold text-gray-600 transition shadow-sm hover:shadow-md">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22.5 12L12 22.5L1.5 12L12 1.5L22.5 12Z" fill="url(#geminiGradient)"/><defs><linearGradient id="geminiGradient" x1="1.5" y1="1.5" x2="22.5" y2="22.5" gradientUnits="userSpaceOnUse"><stop stop-color="#4E85FF"/><stop offset="1" stop-color="#E86E7E"/></linearGradient></defs></svg>
-                    <span class="group-hover:text-blue-600 transition">Gemini</span>
-                </button>
-
-                <button onclick="copyAndOpen('https://chat.mistral.ai')" class="group flex items-center justify-center gap-2 px-3 py-2 bg-white border border-gray-200 hover:border-yellow-400 hover:bg-yellow-50 rounded-lg text-xs font-bold text-gray-600 transition shadow-sm hover:shadow-md">
-                    <svg class="w-4 h-4 text-gray-400 group-hover:text-yellow-600 transition" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-                    <span class="group-hover:text-yellow-600 transition">Mistral</span>
-                </button>
-
-                <button onclick="copyAndOpen('https://claude.ai')" class="group flex items-center justify-center gap-2 px-3 py-2 bg-white border border-gray-200 hover:border-[#D97757] hover:bg-[#FFF8F5] rounded-lg text-xs font-bold text-gray-600 transition shadow-sm hover:shadow-md">
-                    <svg class="w-4 h-4 text-[#D97757]" viewBox="0 0 100 100" fill="currentColor"><path d="M50 0C22.4 0 0 22.4 0 50s22.4 50 50 50 50-22.4 50-50S77.6 0 50 0zm0 90C27.9 90 10 72.1 10 50S27.9 10 50 10s40 17.9 40 40-17.9 40-40 40z"/></svg>
-                    <span class="group-hover:text-[#D97757] transition">Claude</span>
-                </button>
-
-                <button onclick="copyAndOpen('https://chat.openai.com')" class="group flex items-center justify-center gap-2 px-3 py-2 bg-white border border-gray-200 hover:border-green-500 hover:bg-green-50 rounded-lg text-xs font-bold text-gray-600 transition shadow-sm hover:shadow-md">
-                    <svg class="w-4 h-4 text-gray-400 group-hover:text-green-600 transition" viewBox="0 0 24 24" fill="currentColor"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1195 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.453l-.142.0805L8.7043 5.4599a.7948.7948 0 0 0-.3927.6813zm1.09-1.1093l-3.1513-1.8123 3.1513-1.8123 5.2033 3.0043-3.1513 1.8123-2.052-1.1874z"/></svg>
-                    <span class="group-hover:text-green-600 transition">ChatGPT</span>
-                </button>
-
-                <button onclick="copyAndOpen('https://www.perplexity.ai')" class="group flex items-center justify-center gap-2 px-3 py-2 bg-white border border-gray-200 hover:border-teal-500 hover:bg-teal-50 rounded-lg text-xs font-bold text-gray-600 transition shadow-sm hover:shadow-md">
-                    <svg class="w-4 h-4 text-gray-400 group-hover:text-teal-600 transition" viewBox="0 0 24 24" fill="currentColor"><path d="M18.47 1.84a1.5 1.5 0 0 1 1.35 2.16l-3.5 6a1.5 1.5 0 0 1-2.6-1.5l3.5-6a1.5 1.5 0 0 1 1.25-.66Zm-12.94 0a1.5 1.5 0 0 1 1.25.66l3.5 6a1.5 1.5 0 0 1-2.6 1.5l-3.5-6a1.5 1.5 0 0 1 1.35-2.16Zm6.47 7.66a1.5 1.5 0 0 1 1.5 1.5v9a1.5 1.5 0 0 1-3 0v-9a1.5 1.5 0 0 1 1.5-1.5Z"/></svg>
-                    <span class="group-hover:text-teal-600 transition">Perplexity</span>
-                </button>
-
-                <button onclick="copyAndOpen('https://chat.deepseek.com')" class="group flex items-center justify-center gap-2 px-3 py-2 bg-white border border-gray-200 hover:border-blue-600 hover:bg-blue-50 rounded-lg text-xs font-bold text-gray-600 transition shadow-sm hover:shadow-md">
-                    <svg class="w-4 h-4 text-gray-400 group-hover:text-blue-700 transition" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-                    <span class="group-hover:text-blue-700 transition">DeepSeek</span>
-                </button>
+            <div id="toast" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs py-2 px-4 rounded-full opacity-0 transition-opacity duration-300 pointer-events-none z-50">
+                Sauvegardé
             </div>
-        </div>
-    </main>
+        </aside>
+
+        <main id="panel-result" class="hidden md:flex flex-grow bg-gray-50 flex-col h-full relative">
+            <div class="flex-grow p-4 md:p-8 overflow-y-auto">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 min-h-full p-8 relative group">
+                    <button onclick="copyText()" id="btn-copy" class="absolute top-4 right-4 z-10 bg-white border border-gray-200 text-gray-400 hover:text-blue-600 hover:border-blue-200 px-3 py-1.5 rounded-lg shadow-sm font-bold text-xs transition flex items-center gap-2 btn-action opacity-100 md:opacity-0 md:group-hover:opacity-100 focus:opacity-100">
+                        <i class="far fa-copy"></i> <span data-ui="copy">Copier</span>
+                    </button>
+                    <div id="output" class="whitespace-pre-wrap text-gray-700 font-mono text-sm leading-relaxed pt-2"></div>
+                </div>
+            </div>
+
+            <div class="p-4 bg-white border-t border-gray-200 flex flex-col xl:flex-row justify-between items-center gap-4">
+                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider flex-shrink-0">
+                    <i class="fas fa-rocket mr-1"></i> <span data-ui="launch">Lancer avec :</span>
+                </span>
+                
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:flex flex-wrap gap-2 w-full xl:w-auto">
+                    <button onclick="copyAndOpen('https://gemini.google.com')" class="group flex items-center justify-center gap-2 px-3 py-2 bg-white border border-gray-200 hover:border-blue-400 hover:bg-blue-50 rounded-lg text-xs font-bold text-gray-600 transition shadow-sm hover:shadow-md">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22.5 12L12 22.5L1.5 12L12 1.5L22.5 12Z" fill="url(#geminiGradient)"/><defs><linearGradient id="geminiGradient" x1="1.5" y1="1.5" x2="22.5" y2="22.5" gradientUnits="userSpaceOnUse"><stop stop-color="#4E85FF"/><stop offset="1" stop-color="#E86E7E"/></linearGradient></defs></svg>
+                        <span class="group-hover:text-blue-600 transition">Gemini</span>
+                    </button>
+
+                    <button onclick="copyAndOpen('https://chat.mistral.ai')" class="group flex items-center justify-center gap-2 px-3 py-2 bg-white border border-gray-200 hover:border-yellow-400 hover:bg-yellow-50 rounded-lg text-xs font-bold text-gray-600 transition shadow-sm hover:shadow-md">
+                        <svg class="w-4 h-4 text-gray-400 group-hover:text-yellow-600 transition" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                        <span class="group-hover:text-yellow-600 transition">Mistral</span>
+                    </button>
+
+                    <button onclick="copyAndOpen('https://claude.ai')" class="group flex items-center justify-center gap-2 px-3 py-2 bg-white border border-gray-200 hover:border-[#D97757] hover:bg-[#FFF8F5] rounded-lg text-xs font-bold text-gray-600 transition shadow-sm hover:shadow-md">
+                        <svg class="w-4 h-4 text-[#D97757]" viewBox="0 0 100 100" fill="currentColor"><path d="M50 0C22.4 0 0 22.4 0 50s22.4 50 50 50 50-22.4 50-50S77.6 0 50 0zm0 90C27.9 90 10 72.1 10 50S27.9 10 50 10s40 17.9 40 40-17.9 40-40 40z"/></svg>
+                        <span class="group-hover:text-[#D97757] transition">Claude</span>
+                    </button>
+
+                    <button onclick="copyAndOpen('https://chat.openai.com')" class="group flex items-center justify-center gap-2 px-3 py-2 bg-white border border-gray-200 hover:border-green-500 hover:bg-green-50 rounded-lg text-xs font-bold text-gray-600 transition shadow-sm hover:shadow-md">
+                        <svg class="w-4 h-4 text-gray-400 group-hover:text-green-600 transition" viewBox="0 0 24 24" fill="currentColor"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1195 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.453l-.142.0805L8.7043 5.4599a.7948.7948 0 0 0-.3927.6813zm1.09-1.1093l-3.1513-1.8123 3.1513-1.8123 5.2033 3.0043-3.1513 1.8123-2.052-1.1874z"/></svg>
+                        <span class="group-hover:text-green-600 transition">ChatGPT</span>
+                    </button>
+
+                    <button onclick="copyAndOpen('https://www.perplexity.ai')" class="group flex items-center justify-center gap-2 px-3 py-2 bg-white border border-gray-200 hover:border-teal-500 hover:bg-teal-50 rounded-lg text-xs font-bold text-gray-600 transition shadow-sm hover:shadow-md">
+                        <svg class="w-4 h-4 text-gray-400 group-hover:text-teal-600 transition" viewBox="0 0 24 24" fill="currentColor"><path d="M18.47 1.84a1.5 1.5 0 0 1 1.35 2.16l-3.5 6a1.5 1.5 0 0 1-2.6-1.5l3.5-6a1.5 1.5 0 0 1 1.25-.66Zm-12.94 0a1.5 1.5 0 0 1 1.25.66l3.5 6a1.5 1.5 0 0 1-2.6 1.5l-3.5-6a1.5 1.5 0 0 1 1.35-2.16Zm6.47 7.66a1.5 1.5 0 0 1 1.5 1.5v9a1.5 1.5 0 0 1-3 0v-9a1.5 1.5 0 0 1 1.5-1.5Z"/></svg>
+                        <span class="group-hover:text-teal-600 transition">Perplexity</span>
+                    </button>
+
+                    <button onclick="copyAndOpen('https://chat.deepseek.com')" class="group flex items-center justify-center gap-2 px-3 py-2 bg-white border border-gray-200 hover:border-blue-600 hover:bg-blue-50 rounded-lg text-xs font-bold text-gray-600 transition shadow-sm hover:shadow-md">
+                        <svg class="w-4 h-4 text-gray-400 group-hover:text-blue-700 transition" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                        <span class="group-hover:text-blue-700 transition">DeepSeek</span>
+                    </button>
+                </div>
+            </div>
+            <div class="h-6 md:hidden"></div>
+        </main>
+    </div>
 
     <script>
         const jobId = "<?php echo $jobId; ?>";
         // Injection PHP sécurisée
         const jobData = <?php echo json_encode($jobData, JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP); ?>;
         
-        // Registre pour stocker les modèles en mémoire (plus robuste que le HTML value)
         let templateRegistry = {}; 
+
+        // GESTION DES ONGLETS MOBILES
+        function switchTab(tabName) {
+            const editPanel = document.getElementById('panel-edit');
+            const resultPanel = document.getElementById('panel-result');
+            const editBtn = document.getElementById('tab-btn-edit');
+            const resultBtn = document.getElementById('tab-btn-result');
+
+            if (tabName === 'edit') {
+                // Afficher Edition
+                editPanel.classList.remove('hidden');
+                editPanel.classList.add('flex'); // Pour restaurer le flex
+                
+                // Cacher Résultat (seulement sur mobile, Tailwind md:flex le force sur Desktop)
+                resultPanel.classList.add('hidden');
+                resultPanel.classList.remove('flex'); // Si c'était flex
+
+                // Style boutons
+                editBtn.className = "flex-1 py-3 text-sm transition-colors tab-active flex items-center justify-center gap-2";
+                resultBtn.className = "flex-1 py-3 text-sm transition-colors tab-inactive flex items-center justify-center gap-2";
+            } else {
+                // Afficher Résultat
+                resultPanel.classList.remove('hidden');
+                resultPanel.classList.add('flex');
+
+                // Cacher Edition
+                editPanel.classList.add('hidden');
+                editPanel.classList.remove('flex');
+
+                // Style boutons
+                editBtn.className = "flex-1 py-3 text-sm transition-colors tab-inactive flex items-center justify-center gap-2";
+                resultBtn.className = "flex-1 py-3 text-sm transition-colors tab-active flex items-center justify-center gap-2";
+            }
+        }
 
         // TRADUCTIONS UI
         const uiTrads = {
@@ -226,7 +278,8 @@ $jobData['templates'] = $jobData['templates'] ?? [];
                 interactive: "Mode Interactif", 
                 cot: "Auto-Critique", 
                 save: "Sauver", share: "Partager", copy: "Copier", launch: "Lancer avec :",
-                models: "Modèles...", default: "Défaut"
+                models: "Modèles...", default: "Défaut",
+                tab_edit: "Édition", tab_result: "Résultat"
             },
             en: {
                 role: "1. Persona (Role)", placeholder_role: "Ex: Marketing Expert...",
@@ -239,7 +292,8 @@ $jobData['templates'] = $jobData['templates'] ?? [];
                 interactive: "Interactive Mode",
                 cot: "Self-Correction", 
                 save: "Save", share: "Share", copy: "Copy", launch: "Launch with:",
-                models: "Templates...", default: "Default"
+                models: "Templates...", default: "Default",
+                tab_edit: "Edit", tab_result: "Result"
             }
         };
 
@@ -311,9 +365,9 @@ $jobData['templates'] = $jobData['templates'] ?? [];
 
             fmtSel.innerHTML = `<option value="">${defText}</option>`;
             if (jobData.options && jobData.options.formats) {
-                jobData.options.formats.forEach(f => { // BUG FIX: f instead of t
+                jobData.options.formats.forEach(f => {
                     const label = (f.label && f.label[lang]) ? f.label[lang] : (f.label && f.label['fr'] ? f.label['fr'] : f.val);
-                    fmtSel.add(new Option(label, f.val)); // BUG FIX: f.val instead of t.val
+                    fmtSel.add(new Option(label, f.val));
                 });
             }
             fmtSel.value = curFmt;
@@ -467,63 +521,30 @@ $jobData['templates'] = $jobData['templates'] ?? [];
             finally { btn.innerHTML = originalText; }
         }
 
-async function copyAndOpen(url) {
-  const textBlock = document.getElementById('output');
-  const text = (textBlock?.innerText || textBlock?.textContent || '').trim();
-
-  if (!text) {
-    alert("Prompt vide !");
-    return;
-  }
-
-  // Fallback "ancienne méthode" (marche souvent même en HTTP)
-  const legacyCopy = () => {
-    const ta = document.createElement('textarea');
-    ta.value = text;
-    ta.setAttribute('readonly', '');
-    ta.style.position = 'fixed';
-    ta.style.top = '-1000px';
-    ta.style.left = '-1000px';
-    document.body.appendChild(ta);
-    ta.focus();
-    ta.select();
-    ta.setSelectionRange(0, ta.value.length);
-
-    let ok = false;
-    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
-
-    document.body.removeChild(ta);
-    return ok;
-  };
-
-  let copied = false;
-
-  // 1) Tentative via Clipboard API (HTTPS + permissions)
-  if (navigator.clipboard && window.isSecureContext) {
-    try {
-      await navigator.clipboard.writeText(text);
-      copied = true;
-    } catch (err) {
-      console.error("clipboard.writeText() a échoué:", err);
-      copied = legacyCopy();
-    }
-  } else {
-    // 2) Sinon fallback direct
-    copied = legacyCopy();
-  }
-
-  if (copied) {
-    showToast("Copié ! Ouverture...");
-  } else {
-    alert("Copie auto impossible. Sélectionnez le prompt et faites CTRL/CMD + C.");
-  }
-
-  // Ouvrir l'IA
-  const win = window.open(url, '_blank');
-  if (!win || win.closed || typeof win.closed === 'undefined') {
-    alert("⚠️ Pop-up bloqué. Autorisez les pop-ups.");
-  }
-}
+        function copyText() {
+            const textBlock = document.getElementById('output');
+            if (!textBlock || !textBlock.textContent.trim()) { alert("Prompt vide !"); return; }
+            const text = textBlock.textContent;
+            
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text)
+                    .then(() => showToast("Prompt copié !"))
+                    .catch(err => { console.error(err); alert("Erreur copie."); });
+            } else {
+                 const ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.position = 'fixed';
+                document.body.appendChild(ta);
+                ta.focus(); ta.select();
+                try {
+                    document.execCommand('copy');
+                    showToast("Prompt copié !");
+                } catch (e) {
+                    alert("Copie manuelle requise.");
+                }
+                document.body.removeChild(ta);
+            }
+        }
 
         function copyAndOpen(url) {
             const textBlock = document.getElementById('output');
