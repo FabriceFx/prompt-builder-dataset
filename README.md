@@ -13,15 +13,15 @@ PromptBuilder is a dynamic PHP web application designed to generate high-quality
 
 ---
 
-## ✨ Fonctionnalités / Features
+## ✨ Fonctionnalités / features
 
 ### 🇫🇷 Français
-* **Architecture Orientée Données** : Tout (métiers, templates, options) est défini dans `jobs.json`.
-* **Interface Bilingue** : Basculez entre FR/EN instantanément (traductions gérées dans le JSON).
-* **+80 Modèles Experts** : De l'agriculteur au développeur, en passant par le marketing et la santé.
-* **Multi-Modèles** : Liens directs pour lancer le prompt dans Gemini, ChatGPT, Claude, Mistral, Perplexity et DeepSeek.
-* **Personnalisation Locale** : Sauvegarde des templates personnalisés dans le navigateur (LocalStorage).
-* **Système de Feedback** : API intégrée (`save_suggestion.php`) pour collecter les suggestions utilisateurs.
+* **Architecture orientée données** : Tout (métiers, templates, options) est défini dans `jobs.json`.
+* **Interface bilingue** : Basculez entre FR/EN instantanément (traductions gérées dans le JSON).
+* **+80 Modèles experts** : De l'agriculteur au développeur, en passant par le marketing et la santé.
+* **Multi-modèles** : Liens directs pour lancer le prompt dans Gemini, ChatGPT, Claude, Mistral, Perplexity et DeepSeek.
+* **Personnalisation locale** : Sauvegarde des templates personnalisés dans le navigateur (LocalStorage).
+* **Système de feedback** : API intégrée (`save_suggestion.php`) pour collecter les suggestions utilisateurs.
 
 ### 🇬🇧 English
 * **Data-Driven Architecture**: Everything (jobs, templates, options) is defined in `jobs.json`.
@@ -33,7 +33,7 @@ PromptBuilder is a dynamic PHP web application designed to generate high-quality
 
 ---
 
-## 📂 Structure du Projet / Project Structure
+## 📂 Structure du projet / Project Structure
 
 ```text
 /
