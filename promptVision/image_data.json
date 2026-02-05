@@ -1,0 +1,362 @@
+{
+  "ui_translations": {
+    "fr": {
+      "app_title": "PromptVision",
+      "select_mode": "Sélectionnez un mode de création",
+      "back": "Retour",
+      "concept": "📝 Concept Global",
+      "concept_placeholder": "Décrivez l'image en quelques mots (ex: Un château dans les nuages...)",
+      "subject": "Sujet Principal",
+      "action": "⚡ Action & Pose",
+      "scene": "💡 Scène & Lumière",
+      "camera": "📸 Technique & Caméra",
+      "negative": "🚫 Prompt Négatif",
+      "save": "SAUVER",
+      "reset": "EFFACER",
+      "copy": "COPIER LE JSON",
+      "copied": "Copié !",
+      "templates": "✨ Choisir un modèle...",
+      "details_placeholder": "Détails supplémentaires...",
+      "my_saves": "Mes Sauvegardes"
+    },
+    "en": {
+      "app_title": "PromptVision",
+      "select_mode": "Select a creation mode",
+      "back": "Back",
+      "concept": "📝 Core Concept",
+      "concept_placeholder": "Describe the image in a few words...",
+      "subject": "Main Subject",
+      "action": "⚡ Action & Pose",
+      "scene": "💡 Scene & Lighting",
+      "camera": "📸 Tech & Camera",
+      "negative": "🚫 Negative Prompt",
+      "save": "SAVE",
+      "reset": "RESET",
+      "copy": "COPY JSON",
+      "copied": "Copied!",
+      "templates": "✨ Choose a template...",
+      "details_placeholder": "Extra details...",
+      "my_saves": "My Saves"
+    }
+  },
+  "modes": {
+    "portrait": {
+      "translations": { "fr": "Portrait Humain", "en": "Human Portrait" },
+      "icon": "fa-user-circle",
+      "theme": { "primary": "#2563eb", "surface": "#eff6ff" },
+      "groups": ["action", "scene", "camera"],
+      "fields": [
+        { "id": "archetype", "label": { "fr": "Archétype / Genre", "en": "Archetype" }, "options": [ { "val": "Female model", "label": { "fr": "Femme", "en": "Female" } }, { "val": "Male model", "label": { "fr": "Homme", "en": "Male" } }, { "val": "Non-binary model", "label": { "fr": "Non-binaire", "en": "Non-binary" } }, { "val": "Cybernetic Cyborg", "label": { "fr": "Cyborg", "en": "Cyborg" } }, { "val": "Fantasy Elf", "label": { "fr": "Elfe", "en": "Elf" } }, { "val": "Space Marine", "label": { "fr": "Soldat Spatial", "en": "Space Marine" } }, { "val": "Tribal Warrior", "label": { "fr": "Guerrier Tribal", "en": "Tribal Warrior" } }, { "val": "Geisha", "label": { "fr": "Geisha", "en": "Geisha" } } ] },
+        { "id": "age", "label": { "fr": "Âge", "en": "Age" }, "options": [ { "val": "Toddler, 2 years old", "label": { "fr": "Bébé (2 ans)", "en": "Toddler" } }, { "val": "Child, 8 years old", "label": { "fr": "Enfant (8 ans)", "en": "Child" } }, { "val": "Teenager, 16 years old", "label": { "fr": "Ado (16 ans)", "en": "Teenager" } }, { "val": "Young adult, 20s", "label": { "fr": "Jeune Adulte (20s)", "en": "Young Adult" } }, { "val": "Adult, 30s", "label": { "fr": "Adulte (30s)", "en": "Adult" } }, { "val": "Middle-aged, 50s", "label": { "fr": "50 ans", "en": "Middle-aged" } }, { "val": "Elderly, 80s", "label": { "fr": "Personne âgée (80s)", "en": "Elderly" } }, { "val": "Ancient, 100 years old", "label": { "fr": "Centenaire", "en": "Ancient" } } ] },
+        { "id": "skin", "label": { "fr": "Peau", "en": "Skin" }, "options": [ { "val": "Pale porcelain", "label": { "fr": "Pâle / Porcelaine", "en": "Pale" } }, { "val": "Fair skin", "label": { "fr": "Claire", "en": "Fair" } }, { "val": "Sun-kissed tan", "label": { "fr": "Bronzée", "en": "Tanned" } }, { "val": "Olive skin", "label": { "fr": "Mat / Olive", "en": "Olive" } }, { "val": "Dark ebony", "label": { "fr": "Ébène / Noire", "en": "Dark Ebony" } }, { "val": "Freckled", "label": { "fr": "Taches de rousseur", "en": "Freckled" } }, { "val": "Wrinkled weathered", "label": { "fr": "Ridée / Burinée", "en": "Wrinkled" } }, { "val": "Metallic silver", "label": { "fr": "Métallique", "en": "Metallic" } }, { "val": "Bioluminescent", "label": { "fr": "Bioluminescente", "en": "Bioluminescent" } }, { "val": "Tattooed", "label": { "fr": "Tatouée", "en": "Tattooed" } } ] },
+        { "id": "eyes", "label": { "fr": "Yeux", "en": "Eyes" }, "options": [ { "val": "Piercing blue", "label": { "fr": "Bleu perçant", "en": "Blue" } }, { "val": "Emerald green", "label": { "fr": "Vert émeraude", "en": "Green" } }, { "val": "Dark brown", "label": { "fr": "Brun foncé", "en": "Brown" } }, { "val": "Hazel", "label": { "fr": "Noisette", "en": "Hazel" } }, { "val": "Grey", "label": { "fr": "Gris", "en": "Grey" } }, { "val": "Heterochromia", "label": { "fr": "Vairons (Hétérochromie)", "en": "Heterochromia" } }, { "val": "Glowing neon", "label": { "fr": "Néon lumineux", "en": "Glowing" } }, { "val": "Blind white", "label": { "fr": "Aveugle / Blanc", "en": "Blind" } } ] },
+        { "id": "hair_style", "label": { "fr": "Coiffure", "en": "Hair" }, "options": [ { "val": "Long wavy", "label": { "fr": "Longs ondulés", "en": "Long Wavy" } }, { "val": "Straight sleek", "label": { "fr": "Lisses", "en": "Straight" } }, { "val": "Short bob", "label": { "fr": "Carré court", "en": "Bob" } }, { "val": "Pixie cut", "label": { "fr": "Coupe Pixie", "en": "Pixie" } }, { "val": "Messy bun", "label": { "fr": "Chignon décoiffé", "en": "Messy Bun" } }, { "val": "Curly afro", "label": { "fr": "Afro", "en": "Afro" } }, { "val": "Dreadlocks", "label": { "fr": "Dreadlocks", "en": "Dreadlocks" } }, { "val": "Mohawk punk", "label": { "fr": "Crête Iroquoise", "en": "Mohawk" } }, { "val": "Bald", "label": { "fr": "Chauve", "en": "Bald" } } ] },
+        { "id": "hair_color", "label": { "fr": "Couleur Cheveux", "en": "Hair Color" }, "options": [ { "val": "Blonde", "label": { "fr": "Blond", "en": "Blonde" } }, { "val": "Brunette", "label": { "fr": "Brun", "en": "Brunette" } }, { "val": "Black", "label": { "fr": "Noir", "en": "Black" } }, { "val": "Redhead", "label": { "fr": "Roux", "en": "Red" } }, { "val": "Silver grey", "label": { "fr": "Gris argent", "en": "Grey" } }, { "val": "Neon pink", "label": { "fr": "Rose néon", "en": "Pink" } }, { "val": "Electric blue", "label": { "fr": "Bleu électrique", "en": "Blue" } }, { "val": "Pastel lavender", "label": { "fr": "Lavande pastel", "en": "Lavender" } } ] },
+        { "id": "clothing", "label": { "fr": "Vêtement", "en": "Clothing" }, "options": [ { "val": "Casual t-shirt", "label": { "fr": "T-shirt simple", "en": "Casual T-shirt" } }, { "val": "Business suit", "label": { "fr": "Costume", "en": "Suit" } }, { "val": "Evening gown", "label": { "fr": "Robe de soirée", "en": "Evening Gown" } }, { "val": "Leather jacket", "label": { "fr": "Veste en cuir", "en": "Leather Jacket" } }, { "val": "Techwear outfit", "label": { "fr": "Techwear / Futuriste", "en": "Techwear" } }, { "val": "Victorian dress", "label": { "fr": "Robe Victorienne", "en": "Victorian Dress" } }, { "val": "Samurai armor", "label": { "fr": "Armure Samouraï", "en": "Armor" } }, { "val": "Space suit", "label": { "fr": "Combinaison Spatiale", "en": "Space Suit" } }, { "val": "Tactical gear", "label": { "fr": "Militaire Tactique", "en": "Tactical" } } ] }
+      ]
+    },
+    "landscape": {
+      "translations": { "fr": "Paysage & Architecture", "en": "Landscape & Architecture" },
+      "icon": "fa-mountain",
+      "theme": { "primary": "#16a34a", "surface": "#f0fdf4" },
+      "groups": ["scene", "camera"],
+      "fields": [
+        { 
+          "id": "biome", "label": { "fr": "Type de Lieu / Biome", "en": "Type / Biome" },
+          "options": [
+            { "val": "Alpine Mountains", "label": { "fr": "Montagnes Alpines", "en": "Mountains" } },
+            { "val": "Dense Ancient Forest", "label": { "fr": "Forêt Ancienne", "en": "Ancient Forest" } },
+            { "val": "Tropical Paradise Beach", "label": { "fr": "Plage Tropicale", "en": "Tropical Beach" } },
+            { "val": "Sahara Sand Desert", "label": { "fr": "Désert de Sable", "en": "Sand Desert" } },
+            { "val": "Frozen Tundra", "label": { "fr": "Toundra Glacée", "en": "Frozen Tundra" } },
+            { "val": "Volcanic Landscape", "label": { "fr": "Volcanique", "en": "Volcanic" } },
+            { "val": "Cyberpunk Metropolis", "label": { "fr": "Ville Cyberpunk", "en": "Cyberpunk City" } },
+            { "val": "Medieval Village", "label": { "fr": "Village Médiéval", "en": "Medieval Village" } },
+            { "val": "Futuristic Space Station", "label": { "fr": "Station Spatiale", "en": "Space Station" } },
+            { "val": "Underwater Coral Reef", "label": { "fr": "Récif Corallien", "en": "Coral Reef" } },
+            { "val": "Mars Colony", "label": { "fr": "Colonie Martienne", "en": "Mars Colony" } },
+            { "val": "Gothic Cathedral", "label": { "fr": "Cathédrale Gothique", "en": "Gothic Cathedral" } },
+            { "val": "Japanese Zen Garden", "label": { "fr": "Jardin Zen", "en": "Zen Garden" } },
+            { "val": "Post-Apocalyptic Ruins", "label": { "fr": "Ruines Post-Apo", "en": "Ruins" } }
+          ] 
+        },
+        { 
+          "id": "time", "label": { "fr": "Moment de la journée", "en": "Time of Day" },
+          "options": [
+            { "val": "Sunrise, dawn", "label": { "fr": "Aube / Lever de soleil", "en": "Sunrise" } },
+            { "val": "High noon, harsh sun", "label": { "fr": "Midi (Zénith)", "en": "Noon" } },
+            { "val": "Golden hour", "label": { "fr": "Heure Dorée", "en": "Golden Hour" } },
+            { "val": "Blue hour, twilight", "label": { "fr": "Heure Bleue / Crépuscule", "en": "Blue Hour" } },
+            { "val": "Midnight, starry sky", "label": { "fr": "Minuit / Étoiles", "en": "Midnight" } }
+          ]
+        },
+        { 
+          "id": "season", "label": { "fr": "Saison / Climat", "en": "Season / Climate" },
+          "options": [
+            { "val": "Spring, blooming flowers", "label": { "fr": "Printemps (Fleurs)", "en": "Spring" } },
+            { "val": "Summer, vibrant green", "label": { "fr": "Été (Vert vibrant)", "en": "Summer" } },
+            { "val": "Autumn, red and orange leaves", "label": { "fr": "Automne (Feuilles rouges)", "en": "Autumn" } },
+            { "val": "Winter, heavy snow", "label": { "fr": "Hiver (Neige)", "en": "Winter" } },
+            { "val": "Monsoon, heavy rain", "label": { "fr": "Mousson / Pluie", "en": "Monsoon" } },
+            { "val": "Dry drought", "label": { "fr": "Sécheresse / Aride", "en": "Drought" } }
+          ] 
+        },
+        {
+          "id": "element", "label": { "fr": "Élément Dominant", "en": "Dominant Element" },
+          "options": [
+            { "val": "Water, reflections", "label": { "fr": "Eau / Reflets", "en": "Water" } },
+            { "val": "Fire, lava", "label": { "fr": "Feu / Lave", "en": "Fire" } },
+            { "val": "Ice, crystals", "label": { "fr": "Glace / Cristaux", "en": "Ice" } },
+            { "val": "Rock, cliffs", "label": { "fr": "Roche / Falaises", "en": "Rock" } },
+            { "val": "Vegetation, vines", "label": { "fr": "Végétation / Vignes", "en": "Vegetation" } },
+            { "val": "Mist, fog", "label": { "fr": "Brume / Brouillard", "en": "Mist" } },
+            { "val": "Neon lights", "label": { "fr": "Lumières Néon", "en": "Neon" } }
+          ]
+        }
+      ]
+    },
+    "animal": {
+      "translations": { "fr": "Animal & Créature", "en": "Animal & Creature" },
+      "icon": "fa-dragon",
+      "theme": { "primary": "#ea580c", "surface": "#fff7ed" },
+      "groups": ["action", "scene", "camera"],
+      "fields": [
+        { 
+          "id": "class", "label": { "fr": "Famille / Classe", "en": "Class" },
+          "options": [
+            { "val": "Big Cat (Feline)", "label": { "fr": "Grand Félin", "en": "Big Cat" } },
+            { "val": "Canine (Wolf, Dog)", "label": { "fr": "Canidé (Loup, Chien)", "en": "Canine" } },
+            { "val": "Bird of Prey", "label": { "fr": "Rapace", "en": "Bird of Prey" } },
+            { "val": "Reptile / Dragon", "label": { "fr": "Reptile / Dragon", "en": "Reptile" } },
+            { "val": "Marine Life (Fish, Whale)", "label": { "fr": "Vie Marine", "en": "Marine Life" } },
+            { "val": "Insect / Arachnid", "label": { "fr": "Insecte / Araignée", "en": "Insect" } },
+            { "val": "Primate", "label": { "fr": "Primate / Singe", "en": "Primate" } },
+            { "val": "Mythical Creature", "label": { "fr": "Créature Mythique", "en": "Mythical" } }
+          ] 
+        },
+        { "id": "species", "label": { "fr": "Espèce Précise (ex: Tigre)", "en": "Specific Species (ex: Tiger)" }, "type": "text", "default": "Siberian Tiger" },
+        { 
+          "id": "skin_type", "label": { "fr": "Texture Peau/Pelage", "en": "Skin/Fur Type" },
+          "options": [
+            { "val": "Thick fluffy fur", "label": { "fr": "Fourrure épaisse", "en": "Thick Fur" } },
+            { "val": "Iridescent scales", "label": { "fr": "Écailles iridescentes", "en": "Scales" } },
+            { "val": "Colorful feathers", "label": { "fr": "Plumes colorées", "en": "Feathers" } },
+            { "val": "Sleek wet skin", "label": { "fr": "Peau humide/lisse", "en": "Wet Skin" } },
+            { "val": "Armored plates", "label": { "fr": "Plaques / Carapace", "en": "Armored" } },
+            { "val": "Translucent bioluminescent", "label": { "fr": "Translucide / Lumineux", "en": "Translucent" } },
+            { "val": "Mechanical metal parts", "label": { "fr": "Mécanique / Robot", "en": "Mechanical" } }
+          ] 
+        },
+        { 
+          "id": "color_pattern", "label": { "fr": "Couleur / Motif", "en": "Color Pattern" },
+          "options": [
+            { "val": "Albino white", "label": { "fr": "Albino (Blanc)", "en": "Albino" } },
+            { "val": "Melanistic black", "label": { "fr": "Mélanique (Noir)", "en": "Black" } },
+            { "val": "Orange and black stripes", "label": { "fr": "Rayures Tigrées", "en": "Striped" } },
+            { "val": "Leopard spots", "label": { "fr": "Taches Léopard", "en": "Spotted" } },
+            { "val": "Rainbow colored", "label": { "fr": "Arc-en-ciel", "en": "Rainbow" } },
+            { "val": "Camouflage green", "label": { "fr": "Camouflage", "en": "Camouflage" } },
+            { "val": "Gold and blue", "label": { "fr": "Or et Bleu", "en": "Gold & Blue" } }
+          ] 
+        }
+      ]
+    },
+    "object": {
+      "translations": { "fr": "Objet & Packshot", "en": "Object & Product" },
+      "icon": "fa-cube",
+      "theme": { "primary": "#9333ea", "surface": "#faf5ff" },
+      "groups": ["scene", "camera"],
+      "fields": [
+        { 
+          "id": "category", "label": { "fr": "Catégorie d'Objet", "en": "Category" },
+          "options": [
+            { "val": "Perfume Bottle", "label": { "fr": "Flacon de Parfum", "en": "Perfume" } },
+            { "val": "Sneakers / Shoe", "label": { "fr": "Chaussure / Sneaker", "en": "Sneaker" } },
+            { "val": "Electronic Device", "label": { "fr": "Appareil Tech (Tel, Caméra)", "en": "Tech Device" } },
+            { "val": "Food / Drink", "label": { "fr": "Nourriture / Boisson", "en": "Food/Drink" } },
+            { "val": "Jewelry / Ring", "label": { "fr": "Bijou / Bague", "en": "Jewelry" } },
+            { "val": "Furniture / Chair", "label": { "fr": "Meuble / Chaise", "en": "Furniture" } },
+            { "val": "Weapon / Sword", "label": { "fr": "Arme / Épée", "en": "Weapon" } },
+            { "val": "Vehicle / Car", "label": { "fr": "Véhicule / Voiture", "en": "Vehicle" } },
+            { "val": "Magic Potion", "label": { "fr": "Potion Magique", "en": "Potion" } }
+          ]
+        },
+        { 
+          "id": "material", "label": { "fr": "Matériau Principal", "en": "Main Material" },
+          "options": [
+            { "val": "Polished Gold", "label": { "fr": "Or Poli", "en": "Gold" } },
+            { "val": "Transparent Glass", "label": { "fr": "Verre Transparent", "en": "Glass" } },
+            { "val": "Frosted Glass", "label": { "fr": "Verre Givré", "en": "Frosted Glass" } },
+            { "val": "Rustic Wood", "label": { "fr": "Bois Rustique", "en": "Wood" } },
+            { "val": "Matte Plastic", "label": { "fr": "Plastique Mat", "en": "Matte Plastic" } },
+            { "val": "Brushed Aluminum", "label": { "fr": "Aluminium Brossé", "en": "Aluminum" } },
+            { "val": "Ceramic Porcelain", "label": { "fr": "Céramique / Porcelaine", "en": "Ceramic" } },
+            { "val": "Leather", "label": { "fr": "Cuir", "en": "Leather" } },
+            { "val": "Carbon Fiber", "label": { "fr": "Fibre de Carbone", "en": "Carbon Fiber" } }
+          ] 
+        },
+        {
+          "id": "background_context", "label": { "fr": "Contexte / Support", "en": "Context / Stand" },
+          "options": [
+            { "val": "On a marble podium", "label": { "fr": "Podium en marbre", "en": "Marble Podium" } },
+            { "val": "Floating in air", "label": { "fr": "En lévitation", "en": "Floating" } },
+            { "val": "On a wooden table", "label": { "fr": "Table en bois", "en": "Wooden Table" } },
+            { "val": "Surrounded by water splash", "label": { "fr": "Éclaboussure d'eau", "en": "Water Splash" } },
+            { "val": "Surrounded by flowers", "label": { "fr": "Entouré de fleurs", "en": "Flowers" } },
+            { "val": "On a black mirror surface", "label": { "fr": "Miroir noir (Reflet)", "en": "Black Mirror" } },
+            { "val": "In a rocky landscape", "label": { "fr": "Paysage rocheux", "en": "Rocky Landscape" } },
+            { "val": "Neon grid background", "label": { "fr": "Grille Néon", "en": "Neon Grid" } }
+          ]
+        }
+      ]
+    }
+  },
+  "common": {
+    "action": [
+      { 
+        "id": "pose", "label": { "fr": "Pose / Angle", "en": "Pose" },
+        "options": [
+          { "val": "Front facing", "label": { "fr": "Face caméra", "en": "Front" } },
+          { "val": "Profile view", "label": { "fr": "Profil", "en": "Profile" } },
+          { "val": "Three-quarter view", "label": { "fr": "Trois-quarts", "en": "3/4 View" } },
+          { "val": "Back view", "label": { "fr": "De dos", "en": "Back View" } },
+          { "val": "Dynamic running pose", "label": { "fr": "Course dynamique", "en": "Running" } },
+          { "val": "Jumping mid-air", "label": { "fr": "Saut (en l'air)", "en": "Jumping" } },
+          { "val": "Sitting relaxed", "label": { "fr": "Assis relax", "en": "Sitting" } },
+          { "val": "Combat stance", "label": { "fr": "Pose de combat", "en": "Combat" } },
+          { "val": "Flying / Floating", "label": { "fr": "Vol / Lévitation", "en": "Flying" } }
+        ] 
+      },
+      { 
+        "id": "expression", "label": { "fr": "Expression / Humeur", "en": "Expression" },
+        "options": [
+          { "val": "Neutral, serious", "label": { "fr": "Neutre / Sérieux", "en": "Neutral" } },
+          { "val": "Smiling, happy", "label": { "fr": "Souriant / Joyeux", "en": "Smiling" } },
+          { "val": "Laughing", "label": { "fr": "Riant", "en": "Laughing" } },
+          { "val": "Angry, shouting", "label": { "fr": "En colère / Criant", "en": "Angry" } },
+          { "val": "Sad, crying", "label": { "fr": "Triste / Pleurant", "en": "Sad" } },
+          { "val": "Scared, terrified", "label": { "fr": "Effrayé", "en": "Scared" } },
+          { "val": "Mysterious, thoughtful", "label": { "fr": "Mystérieux / Pensif", "en": "Mysterious" } },
+          { "val": "Seductive", "label": { "fr": "Séduisant", "en": "Seductive" } },
+          { "val": "Tired, exhausted", "label": { "fr": "Fatigué", "en": "Tired" } }
+        ] 
+      }
+    ],
+    "scene": [
+      { 
+        "id": "lighting", "label": { "fr": "Éclairage", "en": "Lighting" },
+        "options": [
+          { "val": "Natural sunlight", "label": { "fr": "Lumière Naturelle", "en": "Natural Sun" } },
+          { "val": "Golden Hour", "label": { "fr": "Heure Dorée", "en": "Golden Hour" } },
+          { "val": "Blue Hour", "label": { "fr": "Heure Bleue", "en": "Blue Hour" } },
+          { "val": "Studio Softbox", "label": { "fr": "Studio Softbox", "en": "Softbox" } },
+          { "val": "Hard Rim Light", "label": { "fr": "Contre-jour (Rim Light)", "en": "Rim Light" } },
+          { "val": "Neon lights (Cyberpunk)", "label": { "fr": "Néons (Cyberpunk)", "en": "Neon" } },
+          { "val": "Volumetric Lighting (God Rays)", "label": { "fr": "Rayons divins (Volumétrique)", "en": "God Rays" } },
+          { "val": "Candle light", "label": { "fr": "Bougie", "en": "Candle" } },
+          { "val": "Bioluminescence", "label": { "fr": "Bioluminescence", "en": "Bioluminescence" } },
+          { "val": "Cinematic Chiaroscuro", "label": { "fr": "Clair-obscur Cinéma", "en": "Chiaroscuro" } }
+        ] 
+      },
+      { 
+        "id": "weather", "label": { "fr": "Météo / Atmosphère", "en": "Atmosphere" },
+        "options": [
+          { "val": "Clear blue sky", "label": { "fr": "Ciel bleu dégagé", "en": "Clear Sky" } },
+          { "val": "Partly cloudy", "label": { "fr": "Partiellement nuageux", "en": "Partly Cloudy" } },
+          { "val": "Stormy, dark clouds", "label": { "fr": "Orageux / Sombre", "en": "Stormy" } },
+          { "val": "Heavy Rain", "label": { "fr": "Pluie battante", "en": "Heavy Rain" } },
+          { "val": "Foggy, Misty", "label": { "fr": "Brumeux / Brouillard", "en": "Foggy" } },
+          { "val": "Snowing", "label": { "fr": "Neige", "en": "Snowing" } },
+          { "val": "Sandstorm", "label": { "fr": "Tempête de sable", "en": "Sandstorm" } },
+          { "val": "Post-apocalyptic smog", "label": { "fr": "Smog / Fumée", "en": "Smog" } }
+        ] 
+      }
+    ],
+    "camera": [
+      { 
+        "id": "style", "label": { "fr": "Style Artistique", "en": "Art Style" },
+        "options": [
+          { "val": "Realistic Photography, 8k", "label": { "fr": "Photo Réaliste (8k)", "en": "Realistic Photo" } },
+          { "val": "Cinematic Film Look", "label": { "fr": "Cinéma (Film Look)", "en": "Cinematic" } },
+          { "val": "3D Render, Unreal Engine 5", "label": { "fr": "Rendu 3D (Unreal)", "en": "3D Render" } },
+          { "val": "Anime Style, Studio Ghibli", "label": { "fr": "Anime / Ghibli", "en": "Anime" } },
+          { "val": "Oil Painting, detailed", "label": { "fr": "Peinture à l'huile", "en": "Oil Painting" } },
+          { "val": "Watercolor painting", "label": { "fr": "Aquarelle", "en": "Watercolor" } },
+          { "val": "Cyberpunk Digital Art", "label": { "fr": "Art Digital Cyberpunk", "en": "Digital Art" } },
+          { "val": "Macro Photography", "label": { "fr": "Macro", "en": "Macro" } },
+          { "val": "Black and White Film Noir", "label": { "fr": "Film Noir (N&B)", "en": "Film Noir" } },
+          { "val": "Low Poly 3D", "label": { "fr": "Low Poly", "en": "Low Poly" } },
+          { "val": "Pixar Style 3D", "label": { "fr": "Style Pixar", "en": "Pixar Style" } }
+        ] 
+      },
+      { 
+        "id": "shot", "label": { "fr": "Plan / Cadrage", "en": "Shot Scale" },
+        "options": [
+          { "val": "Extreme Close-up (Eyes)", "label": { "fr": "Très Gros Plan (Yeux)", "en": "Extreme Close-up" } },
+          { "val": "Close-up (Face)", "label": { "fr": "Gros Plan (Visage)", "en": "Close-up" } },
+          { "val": "Medium Shot (Waist up)", "label": { "fr": "Plan Moyen (Taille)", "en": "Medium Shot" } },
+          { "val": "Cowboy Shot (Knees up)", "label": { "fr": "Plan Américain", "en": "Cowboy Shot" } },
+          { "val": "Full Body Shot", "label": { "fr": "Plan Pied (Entier)", "en": "Full Body" } },
+          { "val": "Wide Shot", "label": { "fr": "Plan Large", "en": "Wide Shot" } },
+          { "val": "Extreme Wide Shot", "label": { "fr": "Plan Très Large (Paysage)", "en": "Extreme Wide" } },
+          { "val": "Overhead Drone Shot", "label": { "fr": "Vue Drone / Dessus", "en": "Drone View" } },
+          { "val": "Low Angle Shot", "label": { "fr": "Contre-plongée", "en": "Low Angle" } }
+        ] 
+      },
+      { 
+        "id": "lens", "label": { "fr": "Objectif / Lentille", "en": "Lens" },
+        "options": [
+          { "val": "16mm Wide Angle", "label": { "fr": "16mm (Grand Angle)", "en": "16mm Wide" } },
+          { "val": "35mm Standard", "label": { "fr": "35mm (Reportage)", "en": "35mm" } },
+          { "val": "50mm Portrait", "label": { "fr": "50mm (Portrait)", "en": "50mm" } },
+          { "val": "85mm Prime", "label": { "fr": "85mm (Pro Portrait)", "en": "85mm" } },
+          { "val": "100mm Macro", "label": { "fr": "100mm (Macro)", "en": "100mm Macro" } },
+          { "val": "200mm Telephoto", "label": { "fr": "200mm (Zoom)", "en": "200mm Tele" } },
+          { "val": "Fisheye Lens", "label": { "fr": "Fisheye (Déformé)", "en": "Fisheye" } }
+        ] 
+      }
+    ]
+  },
+  "templates": {
+    "p_cyber": { 
+      "mode": "portrait", 
+      "fr": { "name": "Cyberpunk", "data": { "global_desc": "Hacker futuriste, ruelle sombre, pluie", "archetype": "Female model", "clothing": "Techwear outfit", "lighting": "Neon lights (Cyberpunk)", "style": "3D Render, Unreal Engine 5", "hair_color": "Neon pink", "skin": "Bioluminescent" } },
+      "en": { "name": "Cyberpunk", "data": { "global_desc": "Futuristic hacker, dark alley, rain", "archetype": "Female model", "clothing": "Techwear outfit", "lighting": "Neon lights (Cyberpunk)", "style": "3D Render, Unreal Engine 5", "hair_color": "Neon pink", "skin": "Bioluminescent" } }
+    },
+    "p_pro": { 
+      "mode": "portrait", 
+      "fr": { "name": "Photo Pro LinkedIn", "data": { "global_desc": "Portrait professionnel corporate, fond flou bureau", "archetype": "Male model", "clothing": "Business suit", "lighting": "Studio Softbox", "style": "Realistic Photography, 8k", "age": "Adult, 30s", "lens": "85mm Prime" } },
+      "en": { "name": "Pro Headshot", "data": { "global_desc": "Professional corporate headshot, blurred office background", "archetype": "Male model", "clothing": "Business suit", "lighting": "Studio Softbox", "style": "Realistic Photography, 8k", "age": "Adult, 30s", "lens": "85mm Prime" } }
+    },
+    "p_fantasy": { 
+      "mode": "portrait", 
+      "fr": { "name": "Elfe Fantasy", "data": { "global_desc": "Princesse elfe, forêt magique, lucioles", "archetype": "Fantasy Elf", "clothing": "Evening gown", "lighting": "Natural sunlight", "style": "Oil Painting, detailed", "hair_color": "Silver grey", "ears": "Pointy" } },
+      "en": { "name": "Fantasy Elf", "data": { "global_desc": "Elf princess, magical forest, fireflies", "archetype": "Fantasy Elf", "clothing": "Evening gown", "lighting": "Natural sunlight", "style": "Oil Painting, detailed", "hair_color": "Silver grey" } }
+    },
+    "p_bw": { 
+      "mode": "portrait", 
+      "fr": { "name": "Studio Noir & Blanc", "data": { "global_desc": "Portrait artistique intense, contrasté, émotion", "archetype": "Elderly, 80s", "clothing": "Casual t-shirt", "lighting": "Hard Rim Light", "style": "Black and White Film Noir", "skin": "Wrinkled weathered" } },
+      "en": { "name": "B&W Studio", "data": { "global_desc": "Intense artistic portrait, high contrast, emotion", "archetype": "Elderly, 80s", "clothing": "Casual t-shirt", "lighting": "Hard Rim Light", "style": "Black and White Film Noir", "skin": "Wrinkled weathered" } }
+    },
+    "l_cybercity": { 
+      "mode": "landscape", 
+      "fr": { "name": "Ville Futuriste", "data": { "global_desc": "Métropole cyberpunk sous la pluie, voitures volantes", "biome": "Cyberpunk Metropolis", "lighting": "Neon lights (Cyberpunk)", "style": "3D Render, Unreal Engine 5", "time": "Midnight, starry sky" } },
+      "en": { "name": "Futuristic City", "data": { "global_desc": "Cyberpunk metropolis in rain, flying cars", "biome": "Cyberpunk Metropolis", "lighting": "Neon lights (Cyberpunk)", "style": "3D Render, Unreal Engine 5", "time": "Midnight, starry sky" } }
+    },
+    "l_fantasy": { 
+      "mode": "landscape", 
+      "fr": { "name": "Forêt Enchantée", "data": { "global_desc": "Arbres géants lumineux, champignons magiques", "biome": "Dense Ancient Forest", "lighting": "Bioluminescence", "style": "Cinematic Film Look", "element": "Vegetation, vines" } },
+      "en": { "name": "Enchanted Forest", "data": { "global_desc": "Giant glowing trees, magic mushrooms", "biome": "Dense Ancient Forest", "lighting": "Bioluminescence", "style": "Cinematic Film Look", "element": "Vegetation, vines" } }
+    },
+    "a_tiger": { 
+      "mode": "animal", 
+      "fr": { "name": "Tigre Majestueux", "data": { "global_desc": "Tigre marchant dans la neige, regard intense", "class": "Big Cat (Feline)", "species": "Siberian Tiger", "style": "Realistic Photography, 8k", "color_pattern": "Orange and black stripes", "weather": "Snowing" } },
+      "en": { "name": "Majestic Tiger", "data": { "global_desc": "Tiger walking in snow, intense stare", "class": "Big Cat (Feline)", "species": "Siberian Tiger", "style": "Realistic Photography, 8k", "color_pattern": "Orange and black stripes", "weather": "Snowing" } }
+    },
+    "o_perfume": { 
+      "mode": "object", 
+      "fr": { "name": "Parfum Luxe", "data": { "global_desc": "Flacon parfum élégant, éclaboussure d'eau, frais", "category": "Perfume Bottle", "material": "Transparent Glass", "lighting": "Studio Softbox", "style": "Realistic Photography, 8k", "background_context": "Surrounded by water splash" } },
+      "en": { "name": "Luxury Perfume", "data": { "global_desc": "Elegant perfume bottle, water splash, fresh", "category": "Perfume Bottle", "material": "Transparent Glass", "lighting": "Studio Softbox", "style": "Realistic Photography, 8k", "background_context": "Surrounded by water splash" } }
+    }
+  }
+}
