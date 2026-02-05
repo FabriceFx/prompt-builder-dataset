@@ -41,14 +41,24 @@ uasort($db, function($a, $b) {
     <title>PromptBuilder - Accueil</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@8..144,100..1000&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        body { font-family: 'Google Sans Flex', 'Outfit', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        /* 1. Harmonisation de la police sur Outfit uniquement */
+        body { font-family: 'Outfit', sans-serif; background-color: #f8fafc; color: #1e293b; }
+
+        /* 2. CONSERVATION de la logique graphique existante */
         .job-card { transition: all 0.2s ease-in-out; opacity: 0; animation: fadeIn 0.5s forwards; }
         .job-card:hover { transform: translateY(-4px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); }
+
         @keyframes fadeIn { to { opacity: 1; } }
-        <?php $i = 0; foreach($db as $k => $v) { echo ".job-card:nth-child(".($i+1).") { animation-delay: ".($i * 0.03)."s; }\n"; $i++; } ?>
+
+        /* Animation en cascade pour l'affichage des cartes */
+        <?php $i = 0; foreach($db as $k => $v) { 
+            echo ".job-card:nth-child(".($i+1).") { animation-delay: ".($i * 0.03)."s; }\n"; 
+            $i++; 
+        } ?>
+
         .filter-btn.active { background-color: #1e293b; color: white; border-color: #1e293b; }
     </style>
 </head>
