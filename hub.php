@@ -19,14 +19,13 @@ if (isset($_GET['lang']) && in_array($_GET['lang'], $available_langs)) {
 
 // 2. Configuration SEO (A ADAPTER AVEC VOTRE VRAI DOMAINE)
 $baseUrl = "https://atelier-informatique.com/hub.php"; 
-// Note : Si ce fichier est à la racine, mettez juste le domaine. S'il est dans un dossier, mettez le chemin complet.
 
 // 3. Dictionnaire de traduction
 $trans = [
     'fr' => [
         // Meta SEO
         'meta_title' => 'Atelier IA - Outils et Générateurs de Prompts Gratuits',
-        'meta_desc' => 'Optimisez vos résultats avec ChatGPT, Gemini et Midjourney grâce à nos générateurs de prompts gratuits. Structurez vos demandes pour le texte et l\'image.',
+        'meta_desc' => 'Optimisez vos résultats avec ChatGPT, Gemini et Midjourney grâce à nos générateurs de prompts gratuits.',
         
         // Navigation
         'nav_logo' => 'Atelier<span class="text-blue-600">IA</span>',
@@ -70,7 +69,7 @@ $trans = [
     'en' => [
         // Meta SEO
         'meta_title' => 'AI Workshop - Free Prompt Generators & Tools',
-        'meta_desc' => 'Optimize your results with ChatGPT, Gemini, and Midjourney using our free prompt generators. Structure your requests for both text and image generation.',
+        'meta_desc' => 'Optimize your results with ChatGPT, Gemini, and Midjourney using our free prompt generators.',
         
         // Navigation
         'nav_logo' => 'AI<span class="text-blue-600">Workshop</span>',
@@ -161,6 +160,7 @@ function t($key) {
             </div>
             
             <div class="flex items-center gap-6">
+
                 <div class="flex bg-slate-100 rounded-lg p-1 text-xs font-bold">
                     <a href="?lang=fr" class="px-3 py-1 rounded-md transition-all <?php echo $lang === 'fr' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'; ?>">FR</a>
                     <a href="?lang=en" class="px-3 py-1 rounded-md transition-all <?php echo $lang === 'en' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'; ?>">EN</a>
@@ -213,7 +213,7 @@ function t($key) {
                         <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> <?php echo t('c1_list_3'); ?></li>
                     </ul>
 
-                    <a href="promptLogic/index_sp.php" class="block w-full py-4 rounded-xl bg-slate-900 text-white font-bold text-center hover:bg-indigo-600 transition-colors shadow-lg shadow-indigo-900/20">
+                    <a href="promptLogic/index.php" class="block w-full py-4 rounded-xl bg-slate-900 text-white font-bold text-center hover:bg-indigo-600 transition-colors shadow-lg shadow-indigo-900/20">
                         <?php echo t('c1_btn'); ?> <i class="fas fa-arrow-right ml-2"></i>
                     </a>
                 </div>
