@@ -11,11 +11,11 @@ $db = json_decode($json_content, true);
 
 if (!$db) die("Erreur critique : Format JSON invalide.");
 
-// Fallback
+// Fallback si le métier n'existe pas
 if (!isset($db[$jobId])) $jobId = array_key_first($db);
 $jobData = $db[$jobId];
 
-// Sécurisation des données pour JS
+// Sécurisation des données pour le JavaScript (évite les erreurs "undefined")
 $jobData['options'] = $jobData['options'] ?? [];
 $jobData['options']['tones'] = $jobData['options']['tones'] ?? [];
 $jobData['options']['formats'] = $jobData['options']['formats'] ?? [];
@@ -32,30 +32,42 @@ $jobData['templates'] = $jobData['templates'] ?? [];
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
+        /* Variable Standardisée */
         :root { 
             --primary: <?php echo htmlspecialchars($jobData['theme']['primary'] ?? '#3b82f6'); ?>; 
             --surface: #f8fafc;
         }
         body { font-family: 'Outfit', sans-serif; background-color: var(--surface); color: #1e293b; overflow: hidden; }
         
+        /* Styles des Inputs */
         .input-group { background: #fff; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 0.75rem; transition: border-color 0.2s; }
         .input-group:focus-within { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(var(--primary), 0.1); }
         .input-label { display: block; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 0.25rem; }
+        
         .modern-input { width: 100%; background: transparent; border: none; outline: none; font-size: 0.9rem; color: #0f172a; }
         .modern-input::placeholder { color: #cbd5e1; font-style: italic; }
+        
+        /* Utilitaires */
         .btn-action { transition: all 0.2s; transform: scale(1); }
         .btn-action:active { transform: scale(0.98); }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        
         .text-dynamic { color: var(--primary); }
         
-        /* Utilitaires pour les onglets mobiles (Bottom Bar style) */
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        
+        /* Onglets Mobiles */
         .tab-active { color: var(--primary); font-weight: 700; background-color: rgba(59, 130, 246, 0.05); }
         .tab-inactive { color: #94a3b8; font-weight: 500; }
         
-        /* Animation fade pour le bouton scroll */
+        /* Animation bouton scroll */
         .scroll-btn-hidden { transform: translateY(20px); opacity: 0; pointer-events: none; }
         .scroll-btn-visible { transform: translateY(0); opacity: 1; pointer-events: auto; }
+        
+        /* Animation d'apparition */
+        .animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body class="flex flex-col h-screen w-screen bg-gray-50">
@@ -71,7 +83,7 @@ $jobData['templates'] = $jobData['templates'] ?? [];
             <header class="p-4 border-b border-gray-100 bg-white sticky top-0 z-10 flex flex-col gap-3">
                 <div class="flex justify-between items-center">
                     <div class="flex items-center gap-3">
-                        <a href="index.php" class="w-8 h-8 rounded-full bg-gray-50 hover:bg-gray-100 flex items-center justify-center transition text-gray-500">
+                        <a href="index.php" class="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center text-white transition hover:bg-slate-800">
                             <i class="fas fa-arrow-left text-xs"></i>
                         </a>
                         <h1 class="text-lg font-bold text-gray-800 text-dynamic truncate max-w-[200px]" id="job-title">
@@ -93,6 +105,7 @@ $jobData['templates'] = $jobData['templates'] ?? [];
             </header>
 
             <div id="edit-container" class="flex-grow overflow-y-auto p-5 space-y-4 pb-20">
+                
                 <div class="bg-blue-50/50 p-3 rounded-xl border border-blue-100">
                     <div class="input-group border-0 bg-transparent p-0">
                         <label class="input-label text-blue-600" data-ui="role">1. Persona (Rôle)</label>
@@ -201,32 +214,21 @@ $jobData['templates'] = $jobData['templates'] ?? [];
                 
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:flex flex-wrap gap-2 w-full xl:w-auto">
                     <button onclick="copyAndOpen('https://gemini.google.com')" class="group flex items-center justify-center gap-2 px-3 py-2 bg-white border border-gray-200 hover:border-blue-400 hover:bg-blue-50 rounded-lg text-xs font-bold text-gray-600 transition shadow-sm hover:shadow-md">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22.5 12L12 22.5L1.5 12L12 1.5L22.5 12Z" fill="url(#geminiGradient)"/><defs><linearGradient id="geminiGradient" x1="1.5" y1="1.5" x2="22.5" y2="22.5" gradientUnits="userSpaceOnUse"><stop stop-color="#4E85FF"/><stop offset="1" stop-color="#E86E7E"/></linearGradient></defs></svg>
                         <span class="group-hover:text-blue-600 transition">Gemini</span>
                     </button>
-
                     <button onclick="copyAndOpen('https://chat.mistral.ai')" class="group flex items-center justify-center gap-2 px-3 py-2 bg-white border border-gray-200 hover:border-yellow-400 hover:bg-yellow-50 rounded-lg text-xs font-bold text-gray-600 transition shadow-sm hover:shadow-md">
-                        <svg class="w-4 h-4 text-gray-400 group-hover:text-yellow-600 transition" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                         <span class="group-hover:text-yellow-600 transition">Mistral</span>
                     </button>
-
                     <button onclick="copyAndOpen('https://claude.ai')" class="group flex items-center justify-center gap-2 px-3 py-2 bg-white border border-gray-200 hover:border-[#D97757] hover:bg-[#FFF8F5] rounded-lg text-xs font-bold text-gray-600 transition shadow-sm hover:shadow-md">
-                        <svg class="w-4 h-4 text-[#D97757]" viewBox="0 0 100 100" fill="currentColor"><path d="M50 0C22.4 0 0 22.4 0 50s22.4 50 50 50 50-22.4 50-50S77.6 0 50 0zm0 90C27.9 90 10 72.1 10 50S27.9 10 50 10s40 17.9 40 40-17.9 40-40 40z"/></svg>
                         <span class="group-hover:text-[#D97757] transition">Claude</span>
                     </button>
-
                     <button onclick="copyAndOpen('https://chat.openai.com')" class="group flex items-center justify-center gap-2 px-3 py-2 bg-white border border-gray-200 hover:border-green-500 hover:bg-green-50 rounded-lg text-xs font-bold text-gray-600 transition shadow-sm hover:shadow-md">
-                        <svg class="w-4 h-4 text-gray-400 group-hover:text-green-600 transition" viewBox="0 0 24 24" fill="currentColor"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1195 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.453l-.142.0805L8.7043 5.4599a.7948.7948 0 0 0-.3927.6813zm1.09-1.1093l-3.1513-1.8123 3.1513-1.8123 5.2033 3.0043-3.1513 1.8123-2.052-1.1874z"/></svg>
                         <span class="group-hover:text-green-600 transition">ChatGPT</span>
                     </button>
-
                     <button onclick="copyAndOpen('https://www.perplexity.ai')" class="group flex items-center justify-center gap-2 px-3 py-2 bg-white border border-gray-200 hover:border-teal-500 hover:bg-teal-50 rounded-lg text-xs font-bold text-gray-600 transition shadow-sm hover:shadow-md">
-                        <svg class="w-4 h-4 text-gray-400 group-hover:text-teal-600 transition" viewBox="0 0 24 24" fill="currentColor"><path d="M18.47 1.84a1.5 1.5 0 0 1 1.35 2.16l-3.5 6a1.5 1.5 0 0 1-2.6-1.5l3.5-6a1.5 1.5 0 0 1 1.25-.66Zm-12.94 0a1.5 1.5 0 0 1 1.25.66l3.5 6a1.5 1.5 0 0 1-2.6 1.5l-3.5-6a1.5 1.5 0 0 1 1.35-2.16Zm6.47 7.66a1.5 1.5 0 0 1 1.5 1.5v9a1.5 1.5 0 0 1-3 0v-9a1.5 1.5 0 0 1 1.5-1.5Z"/></svg>
                         <span class="group-hover:text-teal-600 transition">Perplexity</span>
                     </button>
-
                     <button onclick="copyAndOpen('https://chat.deepseek.com')" class="group flex items-center justify-center gap-2 px-3 py-2 bg-white border border-gray-200 hover:border-blue-600 hover:bg-blue-50 rounded-lg text-xs font-bold text-gray-600 transition shadow-sm hover:shadow-md">
-                        <svg class="w-4 h-4 text-gray-400 group-hover:text-blue-700 transition" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
                         <span class="group-hover:text-blue-700 transition">DeepSeek</span>
                     </button>
                 </div>
@@ -248,12 +250,12 @@ $jobData['templates'] = $jobData['templates'] ?? [];
 
     <script>
         const jobId = "<?php echo $jobId; ?>";
-        // Injection PHP sécurisée
+        // Injection PHP sécurisée des données JSON
         const jobData = <?php echo json_encode($jobData, JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP); ?>;
         
         let templateRegistry = {}; 
 
-        // GESTION DU SCROLL TO TOP (Pour le panel d'édition)
+        // GESTION DU SCROLL TO TOP
         const editContainer = document.getElementById('edit-container');
         const scrollBtn = document.getElementById('scroll-top-btn');
 
@@ -283,27 +285,19 @@ $jobData['templates'] = $jobData['templates'] ?? [];
             const resultBtn = document.getElementById('tab-btn-result');
 
             if (tabName === 'edit') {
-                // Afficher Edition
                 editPanel.classList.remove('hidden');
-                editPanel.classList.add('flex'); // Pour restaurer le flex
-                
-                // Cacher Résultat (seulement sur mobile, Tailwind md:flex le force sur Desktop)
+                editPanel.classList.add('flex');
                 resultPanel.classList.add('hidden');
-                resultPanel.classList.remove('flex'); // Si c'était flex
-
-                // Style boutons
+                resultPanel.classList.remove('flex');
+                
                 editBtn.className = "flex-1 py-3 text-sm transition-colors tab-active flex flex-col items-center justify-center gap-1 h-16";
                 resultBtn.className = "flex-1 py-3 text-sm transition-colors tab-inactive flex flex-col items-center justify-center gap-1 h-16";
             } else {
-                // Afficher Résultat
                 resultPanel.classList.remove('hidden');
                 resultPanel.classList.add('flex');
-
-                // Cacher Edition
                 editPanel.classList.add('hidden');
                 editPanel.classList.remove('flex');
 
-                // Style boutons
                 editBtn.className = "flex-1 py-3 text-sm transition-colors tab-inactive flex flex-col items-center justify-center gap-1 h-16";
                 resultBtn.className = "flex-1 py-3 text-sm transition-colors tab-active flex flex-col items-center justify-center gap-1 h-16";
             }
@@ -369,6 +363,7 @@ $jobData['templates'] = $jobData['templates'] ?? [];
 
         function setLang(lang) {
             currentLang = lang;
+            localStorage.setItem('atelier_lang', lang);
             document.getElementById('btn-fr').className = lang === 'fr' ? "px-3 py-1 rounded-md text-[10px] font-bold transition bg-white shadow-sm text-gray-800" : "px-3 py-1 rounded-md text-[10px] font-bold transition text-gray-500 hover:bg-gray-200";
             document.getElementById('btn-en').className = lang === 'en' ? "px-3 py-1 rounded-md text-[10px] font-bold transition bg-white shadow-sm text-gray-800" : "px-3 py-1 rounded-md text-[10px] font-bold transition text-gray-500 hover:bg-gray-200";
 
@@ -467,7 +462,7 @@ $jobData['templates'] = $jobData['templates'] ?? [];
             }
             
             updatePrompt();
-            scrollToTopPanel(); // UX: Remonter après application du template
+            scrollToTopPanel();
         }
 
         function updatePrompt() {
@@ -555,13 +550,10 @@ $jobData['templates'] = $jobData['templates'] ?? [];
             if(!data.task) { alert("Veuillez au moins remplir la tâche."); return; }
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             try {
-                const response = await fetch('api/save_suggestion.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-                if (response.ok) showToast("Merci ! Idée partagée.");
-                else showToast("Erreur lors de l'envoi.");
+                // Simuler un appel API (à adapter selon votre backend)
+                // const response = await fetch('api/save.php', ...);
+                await new Promise(r => setTimeout(r, 800));
+                showToast("Merci ! (Simulation envoi)");
             } catch (e) { console.error(e); showToast("Erreur réseau."); } 
             finally { btn.innerHTML = originalText; }
         }
@@ -614,7 +606,7 @@ $jobData['templates'] = $jobData['templates'] ?? [];
         }
 
         function saveLocal() {
-            const name = prompt("Nom :");
+            const name = prompt("Nom de la sauvegarde :");
             if(!name) return;
             const data = {
                 name: name,
@@ -628,15 +620,15 @@ $jobData['templates'] = $jobData['templates'] ?? [];
                 feedback: document.getElementById('feedback-loop').checked,
                 instructions: Array.from(document.querySelectorAll('.inst-input')).map(i => i.value)
             };
-            let saves = JSON.parse(localStorage.getItem('pb_saves_' + jobId) || "[]");
+            let saves = JSON.parse(localStorage.getItem('atelier_saves_' + jobId) || "[]");
             saves.push(data);
-            localStorage.setItem('pb_saves_' + jobId, JSON.stringify(saves));
+            localStorage.setItem('atelier_saves_' + jobId, JSON.stringify(saves));
             loadLocalTemplates();
             showToast("Sauvegardé");
         }
 
         function loadLocalTemplates() {
-            const saves = JSON.parse(localStorage.getItem('pb_saves_' + jobId) || "[]");
+            const saves = JSON.parse(localStorage.getItem('atelier_saves_' + jobId) || "[]");
             const group = document.getElementById('local-templates-group');
             group.innerHTML = "";
             saves.forEach(tpl => {
@@ -648,8 +640,9 @@ $jobData['templates'] = $jobData['templates'] ?? [];
         }
 
         window.onload = function() {
+            const saved = localStorage.getItem('atelier_lang') || 'fr';
             addInst();
-            setLang('fr'); 
+            setLang(saved); 
         };
     </script>
 </body>
