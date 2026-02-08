@@ -1,0 +1,7 @@
+
+# Mac
+.DS_Store
+
+# Debug
+debug_request.txt
+test_debug.php
