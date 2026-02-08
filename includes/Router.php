@@ -25,6 +25,7 @@ class Router
 
         $path = trim($path, '/');
 
+
         // Default home route
         if ($path === '' || $path === 'index.php') {
             $path = '/';

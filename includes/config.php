@@ -8,6 +8,7 @@ $baseUrl = "$protocol://$host" . ($scriptDir === '/' ? '' : $scriptDir);
 define('BASE_URL', $baseUrl);
 
 // Debug Configuration
+// TODO: Passer à 'false' lors de la mise en ligne (production) pour masquer les erreurs
 define('DEBUG_MODE', true);
 
 // Language configuration

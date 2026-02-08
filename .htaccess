@@ -1,5 +1,19 @@
-Options -MultiViews
-RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)$ index.php [QSA,L]
+<IfModule mod_rewrite.c>
+    # Options +FollowSymLinks
+    # Options -MultiViews
+
+    RewriteEngine On
+    
+    # REGLAGE POUR LA MISE EN LIGNE (PRODUCTION) :
+    RewriteBase /prompt-builder-dataset/
+
+    # Si le fichier ou dossier existe, on ne touche pas
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    
+    # Redirection de TOUT le reste vers index.php
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+# Alternative si mod_rewrite échoue
+FallbackResource /prompt-builder-dataset/index.php
