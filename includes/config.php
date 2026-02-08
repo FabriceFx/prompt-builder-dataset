@@ -7,6 +7,9 @@ $scriptDir = dirname($_SERVER['SCRIPT_NAME']);
 $baseUrl = "$protocol://$host" . ($scriptDir === '/' ? '' : $scriptDir);
 define('BASE_URL', $baseUrl);
 
+// Debug Configuration
+define('DEBUG_MODE', true);
+
 // Language configuration
 define('AVAILABLE_LANGS', ['fr', 'en']);
 define('DEFAULT_LANG', 'fr');
