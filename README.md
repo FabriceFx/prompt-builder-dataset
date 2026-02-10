@@ -1,7 +1,6 @@
 # 🚀 Prompt Builder Dataset - Atelier IA
 
 ![License MIT](https://img.shields.io/badge/License-MIT-blue.svg)
-![Runtime](https://img.shields.io/badge/Google%20Apps%20Script-V8-green)
 ![Author](https://img.shields.io/badge/Auteur-Fabrice%20Faucheux-orange)
 
 ## 📝 Description
