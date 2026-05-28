@@ -1,7 +1,13 @@
 # 🚀 Prompt Builder Dataset - Atelier IA
 
+
+[🇫🇷 Version Française](#-version-française) | [🇬🇧 English Version](#-english-version)
+
 ![License MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 ![Author](https://img.shields.io/badge/Auteur-Fabrice%20Faucheux-orange)
+
+## 🇫🇷 Version Française
+
 
 ## 📝 Description
 **Prompt Builder Dataset** est un écosystème d'outils conçu pour structurer, optimiser et standardiser les interactions avec les Intelligences Artificielles génératives (Gemini, ChatGPT, Claude, Midjourney). 
@@ -46,3 +52,12 @@ The goal is to help professionals move beyond the "blank page" syndrome by imple
 
 
 
+
+
+---
+## 🇬🇧 English Version
+
+> English translation coming soon.
+
+---
+<p align="center"><a href="https://faucheux.bzh" target="_blank" style="color: inherit; text-decoration: none;">&lt;&gt; par Fabrice Faucheux</a></p>
